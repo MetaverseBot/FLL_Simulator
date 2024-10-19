@@ -4,7 +4,6 @@ import math
 import csv
 import re
 
-
 # global variable 
 value = 1
 
@@ -29,25 +28,39 @@ degrees = []
 cf = 2/3 # Conversion Factor
 delta = 0.0000000001 # Small constant used to replace undefined slope
 
+#def scaleRatioX(x):
+    
+
+
 # function to setup size of
 # output window
 def setup():
     background(255)
+    x = 2362
+    y = 1143
     
-    image(loadImage("submerged.jpg"), 0, 0, 2362 * 2/3, 1143 * 2/3)
+    while x >= displayWidth:
+        x -= 1
+        
+    while y >= displayHeight:
+        y -= 1
+        
+    while x/y != 2362/1143:
+        y -= 1
+
+    image(loadImage("submerged.jpg"), 0, 100, x, y)
     
     fill(0)
-    ellipse(starting_point[0], starting_point[1], 10, 10)
     
     text("(0, 0)\n1", starting_point[0] + 15, starting_point[1])
     
-    size(2362 * 2/3, 1143 * 2/3 + 100)
-    
+    size(displayWidth, displayHeight)
+    #fullScreen()
     # Toolbar
-    image(loadImage("download_button.jpg"), 0, 1143 * 2/3, 100, 100) # Download Button
+    image(loadImage("download_button.jpg"), 0, 0, 100, 100) # Download Button
     #image(loadImage("connect.jpg"), 100, 1143 * 2/3, 100, 100) # Connect Button
-    image(loadImage("calculate.jpg"), 200, 1143 * 2/3, 100, 100) # Calculate Button
-    image(loadImage("robot_data_gen.jpg"), 300, 1143 * 2/3, 100, 100) # Robot Simulate Points Button
+    image(loadImage("calculate.jpg"), 200, 0, 100, 100) # Calculate Button
+    image(loadImage("robot_data_gen.jpg"), 300, 0, 100, 100) # Robot Simulate Points Button
     
 # def fileSelected(selection):
 #     print("selection")
@@ -63,12 +76,12 @@ def draw():
 
 def rel_pos_to_pxl(rel_pos):
     mm = rel_pos * 55/72
-    pxl = mm * 2/3
+    pxl = mm * displayWidth / 2362
     
     return pxl
 
 def pxl_to_rel_pos(pxl):
-    mm = pxl * 2/3
+    mm = pxl * 2362 / displayWidth
     rel_pos = mm * 72/55
     
     return rel_pos
@@ -138,7 +151,7 @@ def mousePressed():
             
             manual_simulated_points.append([mouseX, mouseY])
             
-    elif mouseY < 1143 * 2/3: # Draw point
+    elif mouseY > 100: # Draw point
         # width of circle
         r = 10
         
@@ -232,7 +245,7 @@ def mousePressed():
         global total_distance
             
         fill(255)
-        square(300, 1143 * 2/3, 100)
+        square(300, 0, 100)
         fill(0)
         
         text(str(round(total_distance * 3/2 * (1 + 7 / 23), 2)) + " RP,\n" + str(round(total_distance * 1/50, 2)) + " seconds", 305, mouseY)
